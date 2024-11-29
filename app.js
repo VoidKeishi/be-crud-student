@@ -3,7 +3,23 @@ const dotenv = require('dotenv')
 const app = express();
 const cors = require('cors')
 
-app.use(cors())
+const WHITELIST_DOMAIN = [
+    'https://fe-crud-student-20210039.web.app'
+]
+ 
+const corsConfig = {
+    origin: function (origin, callback) {
+        if (WHITELIST_DOMAIN.includes(origin) !== -1 || !origin) {
+            callback(null, true)
+        } else
+            callback(new Error("Not allowed by CORS"))
+    },
+    optionsSuccessStatus: 204,
+    credentials: true,
+}
+ 
+
+app.use(cors(corsConfig))
 //middleware
 app.use(express.json());
 
